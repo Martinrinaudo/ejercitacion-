@@ -1,0 +1,62 @@
+__author__ = 'Martin'
+'''Se solicita un programa que permita agendar contactos en un archivo. De cada contacto se debe ingresar su nombre y 
+apellido, mail y teléfono. 
+Se pide:
+Cargar el archivo por teclado.
+Mostrar el archivo.
+Generar a partir del archivo un vector con todos los contactos.'''
+import os.path
+import pickle
+import random
+from agenda_registros import *
+
+def generar_archivo_random(archivo, n):
+    nombre = ('Martin','Juan','Tito','Mariela', 'Eze','HJ','mon','werf','dvrv','ergf')
+    araya = ('Garcia','Perez', 'Lopez', 'Martinez', 'Prueba', 'Pruebon', 'Pruebita')
+    m = open(archivo, 'wb')
+    for i in range(n):
+        nombre = random.choice(nombre)
+        apellido = random.choice(apellido)
+        telefono = '035' + str(random.radint(0,9)) + str(random.randint(100000, 999999))
+        mail = nombre + '.' + apellido + '@test.com'
+        entrada_agenda = Agenda(nombre, apellido, mail, telefono)
+        pickle.dump(entrada_agenda, m)
+    m.flush()
+    m.close()
+
+
+def validar_mayor(minimo, mensaje):
+    valor = int(input(mensaje))
+    while valor <= minimo:
+        print('El valor ingresado es incorrecto!!! Debe ser mayor a', minimo)
+        valor = int(input(mensaje))
+    return valor
+
+
+def mostrar_archivo(archivo):
+    size = os.path.getsize(archivo)
+    if size < 0:
+        return None
+
+    m = open(archivo, 'rb')
+    while m.tell() < size:
+        agenda = pickle.load(m)
+        listado += '\n' + to_string(agenda)
+////////////////////////////////////////////////////////////////////////////////////////
+-REGISTRO PARA QUE FUNCIONE-
+__author__ = 'Martin'
+
+class Agenda:
+    def __init__(self, nom, apellido, email, tele):
+        self.nom = nom
+        self.apellido = apellido
+        self.email = email
+        self.tele = tele
+
+def to_string(agenda):
+    cadena= 'Nombre y apellido: {:10}'.format(agenda.nom, agenda.apellido)
+    cadena += 'Mail: ${:<10.2f}'.format(agenda.email)
+    cadena += 'Numero de telefono: ${:<5}'.format(agenda.tele)
+
+    return cadena
+
